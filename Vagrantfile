@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Configuration Settings #######################################################
+VAGRANTFILE_API_VERSION = "2"
+VAGRANT_SCRIPT_DIR =  'vagrantinstall'
+VM_BOX = "ubuntu/trusty32"
+SSH_PORT = 8022
+WEB_PORT = 8080
+SQL_PORT = 33306
+MEMORY = "2048"
+################################################################################
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = VM_BOX
+    config.vm.provision :shell, path: VAGRANT_SCRIPT_DIR+"/bootstrap.sh"
+    config.vm.provision :shell, path: VAGRANT_SCRIPT_DIR+"/install-laravel.sh", privileged: false
+  
+    config.vm.network "forwarded_port", guest: 22,   host: SSH_PORT
+    config.vm.network "forwarded_port", guest: 80,   host: WEB_PORT
+    config.vm.network "forwarded_port", guest: 3306, host: SQL_PORT
+
+    config.vm.synced_folder ".", "/vagrant", id: "vagrant",
+        owner: "vagrant",
+        group: "www-data",
+        nfs: false,
+        mount_options: ["dmode=777,fmode=666"]
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--memory", MEMORY]
+    end
+end
