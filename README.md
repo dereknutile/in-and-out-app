@@ -1,6 +1,6 @@
 # In and Out Application
 
-In-and-out status tracking application.  It is built upon the [Laravel](http://laravel.com/) framework.
+In-and-out status tracking application.  It is built upon the [Laravel](http://laravel.com/) framework and the application mockup can be found in the [https://github.com/dereknutile/in-and-out-mockup](https://github.com/dereknutile/in-and-out-mockup) repository.
 
 ## Development
 
